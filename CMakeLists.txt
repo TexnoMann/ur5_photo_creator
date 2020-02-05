@@ -13,7 +13,7 @@ catkin_package()
 catkin_install_python(
 	PROGRAMS
 	    scripts/photo_node.py
-      scripts/photo_creator.py
+      src/photo_creator.py
 	DESTINATION
 	    ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

@@ -12,9 +12,9 @@ class PhotoNode:
         rospy.init_node("photo_node", anonymous=False)
         rospy.Subscriber("/photo", Empty, self.callback)
 
-        self.ip = rospy.get_param("endpoint", "http://192.168.1.100:8080/")
+        self.ip = rospy.get_param("~endpoint", "http://192.168.88.254:8089/")
 	pwd = os.getcwd() + "/result"
-	self.path = rospy.get_param("newpath", pwd)
+	self.path = rospy.get_param("~newpath", pwd)
 	try:
     	    os.mkdir(self.path)
 	except OSError:

@@ -25,15 +25,23 @@ class PoseTrjPlaner:
         self.__maxSpeed = maxSpeed
 
     def poseCubicInterpolation(self,startPos, finishPos, finalTime):
-        speed_p2p = abs(finishSpeed-startSpeed)/(finalTime)
-        if speed_p2p>= self.__maxSpeed:
-            print("[WARN] Trajectory planer give heigh speed, change final time")
-            finalTime = abs(finishSpeed-startSpeed)/self.__maxSpeed;
-
-        cubicSplines=[]
+        speed_p2p = 0;
+        p=-1;
         for i in range(0,6):
-            q = np.matrix([[startSpeed], [0], [finishSpeed], [0]])
+            speed_p2p = max(speed_p2p, abs(finishPos[i]-startPos[i])/(finalTime))
+            if speed_p2p>= self.__maxSpeed:
+                p = i
+        if p != -1:
+            print("[WARN] Trajectory planer give heigh speed, change final time")
+            finalTime = abs(finishPos[p]-startPos[p])/self.__maxSpeed;
+
+        cubicSplines = []
+        for i in range(0,6):
+            q = np.matrix([[startPos[i]], [0], [finishPos[i]], [0]])
+            print(finishPos)
+            cubicSpline = CubicSpline()
             cubicSpline.calcWondermondMatrix(0, finalTime)
+                # print(q)
             cubicSpline.poly = np.linalg.inv(cubicSpline.getWondermondMatrix()) * q
             cubicSpline.finalTime = finalTime
             cubicSplines.append(cubicSpline)
